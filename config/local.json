@@ -1,0 +1,22 @@
+{
+  "drachtio": {
+    "host": "127.0.0.1",
+    "port": 9022,
+    "secret": "cymru"
+  },
+  "freeswitch": {
+    "address": "127.0.0.1",
+    "port": 8021,
+    "secret": "ClueCon"
+  },
+  "logging": {
+    "level": "debug"
+  },
+  "dialogflow": {
+    "project": "<dialogflow-project-id-goes-here>",
+    "lang": "en-US",
+    "event": "welcome",
+    "hotword": "OK Google"
+  },
+  "transferMethod": "REFER"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "google-tts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dave Horton",
+  "license": "MIT",
+  "dependencies": {
+    "config": "^3.2.3",
+    "drachtio-fsmrf": "^1.5.7",
+    "drachtio-srf": "^4.4.19",
+    "pino": "^5.13.5"
+  }
+}
