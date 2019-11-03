@@ -15,8 +15,11 @@
   "dialogflow": {
     "project": "<dialogflow-project-id-goes-here>",
     "lang": "en-US",
-    "event": "welcome",
-    "hotword": "OK Google"
+    "events": {
+      "welcome": "welcome"
+    }
   },
-  "transferMethod": "REFER"
+  "callTransfer": {
+    "method": "REFER"
+  }
 }

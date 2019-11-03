@@ -1,6 +1,6 @@
 # drachtio-dialogflow-phone-gateway
 
-A open source telephony gateway for Google Dialogflow.  All you need is a SIP trunk pointed to a server configured with the required software, and you're good to go. 
+An open source telephony gateway for Google Dialogflow.  All you need is a SIP trunk pointed to a server configured with the required software, and you're good to go. 
 
 ## Features
 - Full dialogflow telephony integration
@@ -103,16 +103,25 @@ specifies log levels: info or debug
   "dialogflow": {
     "project": "<dialogflow-project-id-goes-here>",
     "lang": "en-US",
-    "event": "welcome",
+    "events": {
+      "welcome": "welcome"
+    }
     "hotword": "OK Google"
   }
 ```
-the dialogflow agent to execute, language to use, optional event to send with the initial dialogflow streaming intent request, and optional hotword or phrase to use to "barge in" (i.e. interrupt audio).
+project - the dialogflow agent to execute
+lang - language dialect to use, 
+events.welcome - optional, if provided an event to send with the initial dialogflow streaming intent request
+hostword - hotword or phrase to use to "barge in" (i.e. interrupt audio).
 
 ```
-  "transferMethod": "REFER"
+  "callTransfer": {
+    "method": "REFER",
+    "domain": "foo.bar"
+  }
 ```
-indicates method to use for call transfer: REFER or INVITE
+method - indicates method to use for call transfer: REFER or INVITE
+domain - optional, if provided specifies the domain name to put in the Refer-To and Referred-By headers
 
 ```
   "typing-sound": "/tmp/typing-sound.mp3"
