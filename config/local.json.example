@@ -17,7 +17,8 @@
     "lang": "en-US",
     "events": {
       "welcome": "welcome"
-    }
+    },
+    "noInputTimeout": "15000"
   },
   "callTransfer": {
     "method": "INVITE",
