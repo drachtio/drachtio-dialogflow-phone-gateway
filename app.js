@@ -6,10 +6,12 @@ const config = require('config');
 const logger = require('pino')(config.get('logging'));
 const CallSession = require('./lib/call-session');
 
+/* connect to the drachtio server */
 srf.connect(config.get('drachtio'))
   .on('connect', (err, hp) => logger.info(`connected to sip on ${hp}`))
   .on('error', (err) => logger.info(err, 'Error connecting'));
 
+/* we want to handle incoming invites */
 srf.invite((req, res) => {
   const callSession = new CallSession(logger, mrf, req, res);
   callSession
