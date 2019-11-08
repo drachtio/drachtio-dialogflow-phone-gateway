@@ -23,7 +23,7 @@
   "callTransfer": {
     "method": "INVITE",
     "domain": "your.trunking.provider.ip.or.dns",
-    "auth: {
+    "auth": {
       "username": "foo",
       "password": "bar"
     }
