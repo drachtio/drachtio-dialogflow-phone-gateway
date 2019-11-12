@@ -14,6 +14,7 @@
   },
   "dialogflow": {
     "project": "<dialogflow-project-id-goes-here>",
+    "credentials": "<service-account-path-goes-here>",
     "lang": "en-US",
     "events": {
       "welcome": "welcome"
