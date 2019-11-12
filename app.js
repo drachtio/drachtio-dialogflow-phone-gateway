@@ -4,6 +4,7 @@ const Mrf = require('drachtio-fsmrf');
 const mrf = new Mrf(srf);
 const config = require('config');
 const logger = require('pino')(config.get('logging'));
+const {validateDID} = require('./lib/middleware');
 const CallSession = require('./lib/call-session');
 
 /* connect to the drachtio server */
@@ -12,6 +13,7 @@ srf.connect(config.get('drachtio'))
   .on('error', (err) => logger.info(err, 'Error connecting'));
 
 /* we want to handle incoming invites */
+srf.use('invite', validateDID(logger));
 srf.invite((req, res) => {
   const callSession = new CallSession(logger, mrf, req, res);
   callSession

@@ -12,6 +12,7 @@
     "config": "^3.2.3",
     "drachtio-fsmrf": "^1.5.7",
     "drachtio-srf": "^4.4.19",
-    "pino": "^5.13.5"
+    "pino": "^5.13.5",
+    "request": "^2.88.0"
   }
 }
