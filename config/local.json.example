@@ -19,7 +19,18 @@
     "events": {
       "welcome": "welcome"
     },
-    "noInputTimeout": "15000"
+    "noInputTimeout": "15000",
+    "recordDirectory": "/usr/local/freeswitch/recordings"
+  },
+  "+15557776666": {
+    "project": "<dialogflow-project-id-goes-here>",
+    "credentials": "<service-account-path-goes-here>",
+    "lang": "en-US",
+    "events": {
+      "welcome": "welcome"
+    },
+    "noInputTimeout": "15000",
+    "recordDirectory": "/usr/local/freeswitch/recordings"
   },
   "callTransfer": {
     "method": "INVITE",

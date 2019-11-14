@@ -113,6 +113,9 @@ project - the dialogflow agent to execute
 lang - language dialect to use, 
 events.welcome - optional, if provided an event to send with the initial dialogflow streaming intent request
 hostword - hotword or phrase to use to "barge in" (i.e. interrupt audio).
+recordDirectory - option, directory path for the session recording 
+
+Note: route by DID by create config object with the DID as the key. See the sample config for an example
 
 ```
   "callTransfer": {
