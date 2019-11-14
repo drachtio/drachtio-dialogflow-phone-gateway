@@ -109,13 +109,17 @@ specifies log levels: info or debug
     "hotword": "OK Google"
   }
 ```
-project - the dialogflow agent to execute
-lang - language dialect to use, 
-events.welcome - optional, if provided an event to send with the initial dialogflow streaming intent request
-hostword - hotword or phrase to use to "barge in" (i.e. interrupt audio).
-recordDirectory - option, directory path for the session recording 
+Specifies the dialogflow agent to connect calls to, by default.
+> Note: It is possible to override this on a per-DID basis (see below). 
+* project - the dialogflow agent to execute
+* lang - language dialect to use, 
+* events.welcome - optional, if provided an event to send with the initial dialogflow streaming intent request
+* hostword - optional, hotword or phrase to use to "barge in" (i.e. interrupt audio).
+* recordDirectory - optional, directory path for the session recording
 
-Note: route by DID by create config object with the DID as the key. See the sample config for an example
+> Note: if `recordDirectory` is provided, recordings of all calls will be creasted and saved in the specified directory.
+
+To route to different dialogflow projects by DID, see the [example config](config/(local.json/example)) which illustrates how to add configuration where DIDs are keys to an object containing dialogflow information to use for calls arriving on that DID.
 
 ```
   "callTransfer": {
@@ -123,12 +127,12 @@ Note: route by DID by create config object with the DID as the key. See the samp
     "domain": "foo.bar"
   }
 ```
-method - indicates method to use for call transfer: REFER or INVITE
-domain - optional, if provided specifies the domain name to put in the Refer-To and Referred-By headers
+* method - indicates method to use for call transfer: REFER or INVITE
+* domain - optional, if provided specifies the domain name to put in the Refer-To and Referred-By headers
 
 ```
   "typing-sound": "/tmp/typing-sound.mp3"
 ```
-Optionally, indicates the path to a .wav or .mp3 sound file to play while a fullfilment action is occurring.  The audio will begin playing when an end of utterance has been detected, and will stop when the subsequent audio prompt from dialogflow arrives.
+Optionally, if provided this value indicates the path to a .wav or .mp3 sound file to play while a fullfilment action is occurring.  The audio will begin playing when an end of utterance has been detected, and will stop when the subsequent audio prompt from dialogflow arrives.
 
 Note: an example typing sound file can be found in sounds/keyboard-typing.wav of this project.
