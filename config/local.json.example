@@ -39,5 +39,13 @@
       "username": "foo",
       "password": "bar"
     }
+  },
+  "register": {
+    "enabled": false
+    "domain": "your.trunking.provider.ip.or.dns",
+    "auth": {
+      "username": "foo",
+      "password": "bar"
+    }
   }
 }
