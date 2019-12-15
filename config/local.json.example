@@ -43,6 +43,7 @@
   "register": {
     "enabled": false
     "domain": "your.trunking.provider.ip.or.dns",
+    "user": "foo",
     "auth": {
       "username": "foo",
       "password": "bar"

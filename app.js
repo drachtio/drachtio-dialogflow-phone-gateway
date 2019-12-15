@@ -13,10 +13,12 @@ srf.connect(config.get('drachtio'))
     logger.info(`connected to sip on ${hp}`);
     /* some sip trunking providers require us to register in order to receive calls.. */
     if (config.has('register')  && config.get('register.enabled') === true) {
-      const domain = config.has('register.domain');
+      const domain = config.get('register.domain');
       const proxy = config.has('register.proxy') ? config.get('register.proxy') : null;
       const auth = config.get('register.auth');
-      registerWithProvider(domain, proxy, auth);
+      const user = config.has('register.user') ? config.get('register.user') : auth.username;
+      logger.info(`registering with user ${user}`);
+      registerWithProvider(domain, proxy, user, auth);
     }
   })
   .on('error', (err) => logger.info(err, 'Error connecting'));
@@ -34,9 +36,9 @@ srf.invite((req, res) => {
   callSession.exec();
 });
 
-async function registerWithProvider(domain, proxy, auth) {
-  const uri = `<sip:${auth.username}@${domain}>`;
-  const contact = `<sip:${auth.username}@localhost>`;
+async function registerWithProvider(domain, proxy, user, auth) {
+  const uri = `<sip:${user}@${domain}>`;
+  const contact = `<sip:${user}@localhost>`;
   try {
     const req = await srf.request({
       uri: `sip:${domain}`,
@@ -55,13 +57,14 @@ async function registerWithProvider(domain, proxy, auth) {
         const duration = parseExpires(res);
         if (duration) {
           logger.info('successfully registered with sip provider');
-          setTimeout(registerWithProvider.bind(null, domain, proxy, auth), duration - 10);
+          return setTimeout(registerWithProvider.bind(null, domain, proxy, auth), duration - 10);
         }
-        else throw new Error('200 OK to REGISTER did not include expires value');
       }
-      else throw new Error(`Failure registering: ${res.status}`);
+      logger.info(`Failed registering with sip provider: ${res.status}, try again in 30 secs`);
+      setTimeout(registerWithProvider.bind(null, domain, proxy, user, auth), 30000);
     });
   } catch (err) {
-    logger.info(err, 'Failed registering with sip provider');
+    logger.info(`Failed registering with sip provider: ${err.message}, try again in 30 secs`);
+    setTimeout(registerWithProvider.bind(null, domain, proxy, user, auth), 30000);
   }
 }
