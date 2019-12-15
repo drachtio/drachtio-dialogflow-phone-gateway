@@ -13,6 +13,7 @@
     "drachtio-fsmrf": "^1.5.7",
     "drachtio-srf": "^4.4.19",
     "pino": "^5.13.5",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "request-debug": "^0.2.0"
   }
 }
