@@ -9,24 +9,17 @@
     "port": 8021,
     "secret": "ClueCon"
   },
-  "logging": {
-    "level": "debug"
-  },
   "dialogflow": {
     "project": "<dialogflow-project-id-goes-here>",
     "credentials": "<service-account-path-goes-here>",
     "lang": "en-US",
-    "events": {
-      "welcome": "welcome"
-    },
+    "welcomeEvent": "welcome",
     "noInputTimeout": "15000"
   },
-  "callTransfer": {
+  "sipTrunk": {
     "method": "INVITE",
-    "domain": "your.trunking.provider.ip.or.dns",
-    "auth": {
-      "username": "foo",
-      "password": "bar"
-    }
+    "gateway": "your.trunking.provider.ip.or.dns",
+    "username": "only needed if your gateway requires",
+    "password": "only needed if your gateway requires"
   }
 }

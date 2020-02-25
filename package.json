@@ -11,7 +11,9 @@
   "dependencies": {
     "config": "^3.2.3",
     "drachtio-fsmrf": "^1.5.7",
+    "drachtio-mw-apiban": "^1.0.1",
     "drachtio-srf": "^4.4.19",
-    "pino": "^5.13.5"
+    "pino": "^5.13.5",
+    "uuid": "^7.0.0"
   }
 }
