@@ -13,6 +13,9 @@
     "drachtio-fsmrf": "^1.5.7",
     "drachtio-mw-apiban": "^1.0.1",
     "drachtio-srf": "^4.4.19",
+    "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0",
+    "express-ws": "^4.0.0",
     "pino": "^5.13.5",
     "uuid": "^7.0.0"
   }
