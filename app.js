@@ -9,7 +9,10 @@ const CallSession = require('./lib/call-session');
 
 /* connect to the drachtio server */
 srf.connect(config.get('drachtio'))
-  .on('connect', (err, hp) => logger.info(`connected to sip on ${hp}`))
+  .on('connect', (err, hp) => {
+    logger.info(`connected to sip on ${hp}`);
+    startProxyPings();
+  })
   .on('error', (err) => logger.info(err, 'Error connecting'));
 
 /* we want to handle incoming invites */
@@ -25,3 +28,35 @@ srf.invite((req, res) => {
     .on('end', () => logger.debug('dialogflow session ended'));
   callSession.exec();
 });
+
+/* OPTIONS ping the proxies to let them know we are here */
+
+const startProxyPings = async() => {
+  if (config.has('proxies')) {
+    const proxies = config.get('proxies');
+    if (proxies.length > 0) {
+      await pingProxies(proxies);
+      setInterval(pingProxies.bind(null, proxies), 20000);
+    }
+  }
+};
+
+const pingProxies = async(proxies) => {
+  for (const proxy of proxies) {
+    try {
+      const req = await srf.request({
+        uri: proxy,
+        method: 'OPTIONS',
+        headers: {
+          'X-Status': 'open',
+          'X-Calls': 0
+        }
+      });
+      req.on('response', (res) => {
+        logger.debug(`received ${res.status} to OPTIONS`);
+      });
+    } catch (err) {
+      logger.info({err}, `Error sending OPTIONS ping to ${proxy}`);
+    }
+  }
+};

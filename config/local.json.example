@@ -12,6 +12,7 @@
   "logging": {
     "level": "debug"
   },
+  "proxies": ["10.10.10.1"],
   "dialogflow": {
     "project": "<dialogflow-project-id-goes-here>",
     "credentials": "<service-account-path-goes-here>",
