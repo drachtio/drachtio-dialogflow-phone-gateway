@@ -1,14 +1,42 @@
 # drachtio-dialogflow-phone-gateway
 
-An open source telephony gateway for Google Dialogflow.  All you need is a SIP trunk pointed to a server configured with the required software, and you're good to go. 
+An open source telephony gateway for Google's [dialogflow](dialogflow.com).  This branch is preconfigured to send call transfers through [Simwood](https://simwood.com/).
 
-## Features
+The dialogflow gateway includes:
+
 - Full dialogflow telephony integration
-- Call transfer via either SIP REFER or INVITE (requires support from your SIP trunking provider).
+- Call transfer to any E-164 number, including non-US destinations
+- Support for DMTF entry alonside speech as a way of responding to prompts
+- configurable no input timeout
 - playback interruption / barge-in via configurable hotword or phrase
-- no activity detection
-- recording support
 - support for ambient typing sound while long-running fulfillment activity is happening
+- websocket API to receive streaming real-time transcriptions and intents from the gateway; for example to enable agent augmentation
+
+## Configuration
+
+The following environment variables are used to provide run-time configuration to the application (optionally, a configuration file can be used instead of environment variables; see config/local.json.example for details).
+
+#### Application configuration
+
+|Environment Variable Name|Description| Required?|
+|------------|---------|---------|
+|GOOGLE_APPLICATION_CREDENTIALS|path to a json key file containing GCP credentials used to authenticate to dialogflow|Yes|
+|DIALOGFLOW_PROJECT|the dialogflow project id to connect calls to|Yes|
+|DIALOGFLOW_LANG|language to use for the dialogflow session|No (default: en-us)|
+|DIALOGFLOW_WELCOME_EVENT|name of initial event to send to dialogflow when connecting call|No|
+|DIALOGFLOW_NO_INPUT_TIMEOUT|number of seconds of no detected intent to allow to pass before reprompting the caller|No|
+DIALOGFLOW_ENABLE_DTMF_ALWAYS| if 1, dtmf will always be collected and sent to dialogflow as a text input|No(default: 1)|
+|DIALOGFLOW_INTERDIGIT_TIMEOUT|number of milliseconds to wait after collecting a dtmf before sending the collected dtmf digits to dialogflow as a text query|No (default: 3000)|
+|DIALOGFLOW_BARGE_PHRASE|a phrase that when uttered by the caller will cause audio playback to the caller to cease|No|
+|DIALOGFLOW_THINKING_SOUND|path to an audio file (wav or mp3) to play while dialogflow intent detection and back-end fulfillment are proceeding|No|
+|HTTP_PORT|http port of websocket server to listen on for incoming client connections|No|
+|SIP_TRUNK_GATEWAY|IP address or DNS to send outbound INVITEs to for call transfer|No, but call transfer will be disabled if not specified|
+
+#### Dialogflow configuration
+In the dialogflow console, make you have done the following:
+* on the Speech tab, enable "Enable Automatic Text to Speech"
+* for Output Audio Encoding, select 16 bit linear PCM or mp3
+* on the General tab, enable "Enable beta features and APIs".
 
 ## Prerequisites
 You'll need a server outfitted with the following software:
@@ -49,27 +77,6 @@ Create yourself a playbook like the following:
 ```
 Run it using `ansible-playbook`, answering 'True' to the question about install grpc support.
 
-## Configuration
-
-### Dialogflow authentication
-To authenticate with dialogflow, you will need to log into Google Cloud Platform and generate a service account json key file.  Make sure you enable the APIs needed for dialogflow.  Download the json file and place it on your server somewhere. 
-
-Then, edit your `/etc/systemd/system/freeswitch.service` systemd file, creating an environment variable named `GOOGLE_APPLICATION_CREDENTIALS` that points to it; i.e. add a line like this:
-```
-Environment=“GOOGLE_APPLICATION_CREDENTIALS=/home/admin/<your-service-key>.json
-```
-
-After doing that, reload and restart the systemd service:
-```
-systemctl daemon-reload
-systemctl restart freeswitch
-```
-
-### Dialogflow configuration
-In the dialogflow console, make you have done the following:
-* on the Speech tab, enable "Enable Automatic Text to Speech"
-* for Output Audio Encoding, select "16 bit linear PCM
-* on the General tab, enable "Enable beta features and APIs".
 
 ### Application configuration
 The application configuration file can be found in config/local.json.  It consists of the following sections:
