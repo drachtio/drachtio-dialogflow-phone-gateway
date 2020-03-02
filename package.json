@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "config": "^3.2.3",
+    "cors": "^2.8.5",
     "drachtio-fsmrf": "^1.5.7",
     "drachtio-mw-apiban": "^1.0.1",
     "drachtio-srf": "^4.4.19",
