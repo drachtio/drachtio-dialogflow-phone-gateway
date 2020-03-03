@@ -1,6 +1,6 @@
 const Srf = require('drachtio-srf');
 const srf = new Srf();
-const logger = require('pino')({level: 'debug'});
+const logger = require('pino')({level: 'info'});
 const opts = require('./lib/config')(logger);
 const CallSession = require('./lib/call-session');
 const {initLogging} = require('./lib/middleware')(logger);

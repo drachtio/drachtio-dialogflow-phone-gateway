@@ -1,0 +1,86 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "region": "eu-west-2",
+    "ssh_username": "admin",
+    "ami_description": "drachtio dialogflow telephony gateway for Simwood", 
+    "instance_type": "t2.xlarge",
+    "drachtio_version": "v0.8.4",
+    "dialogflow_gateway_branch": "simwood"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "{{user `region`}}",
+    "source_ami_filter": {
+      "filters": {
+        "virtualization-type": "hvm",
+        "name": "debian-stretch-hvm-x86_64-gp2-*",
+        "root-device-type": "ebs"
+      },
+      "owners": ["379101102735"],
+      "most_recent": true
+    },
+    "instance_type": "{{user `instance_type`}}",
+    "ssh_username": "{{user `ssh_username`}}",
+    "ami_name": "drachtio-simwood-dialogflow-phone-gateway-{{isotime |clean_resource_name}}",
+    "ami_description": "{{user `ami_description`}}", 
+    "launch_block_device_mappings": [
+      {
+        "device_name": "xvda",
+        "volume_size": 40,
+        "volume_type": "gp2",
+        "delete_on_termination": true
+      }
+    ],
+    "tags": {
+      "Role": "dialogflow-phone-gateway"
+    },
+    "run_tags": {
+      "Role": "dialogflow-phone-gateway"
+    }
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done",
+        "sudo apt-get update",
+        "sudo apt-get -y install python gcc g++ make cmake build-essential git autoconf automake \\",
+        "curl telnet libtool libtool-bin libssl-dev libcurl4-openssl-dev libz-dev systemd-coredump liblz4-tool \\",
+        "iptables-dev libavfilter-dev libavcodec-dev libswresample-dev libswscale-dev \\",
+        "libevent-dev libpcap-dev libxmlrpc-core-c3-dev markdown libjson-glib-dev liblua5.1-0-dev \\",
+        "libhiredis-dev gperf libspandsp-dev default-libmysqlclient-dev htop dnsutils gdb \\",
+        "gnupg2 wget pkg-config ca-certificates libjpeg-dev libsqlite3-dev libpcre3-dev \\",
+        "libspeex-dev libspeexdsp-dev libedit-dev libtiff-dev yasm haveged \\",
+        "libopus-dev libopusfile-dev libsndfile-dev libshout3-dev libmpg123-dev libmp3lame-dev",
+        "sudo chmod a+w /usr/local/src"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "files/",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "valid_exit_codes": [0, 2300218],
+      "script": "scripts/install_freeswitch.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "chmod +x {{ .Path }}; sudo '{{ .Path }}' {{user `drachtio_version`}}",
+      "script": "scripts/install_drachtio.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/install_nodejs.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/install_app.sh"
+    }
+  ]
+}
