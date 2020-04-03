@@ -9,6 +9,7 @@
   "author": "Dave Horton",
   "license": "MIT",
   "dependencies": {
+    "bent": "^7.1.2",
     "config": "^3.2.3",
     "cors": "^2.8.5",
     "drachtio-fsmrf": "^1.5.7",
