@@ -1,5 +1,5 @@
 {
-  "name": "google-tts",
+  "name": "drachtio-dialogflow-phone-gateway",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "config": "^3.2.3",
-    "drachtio-fsmrf": "^1.5.7",
+    "drachtio-fsmrf": "^2.0.2",
     "drachtio-srf": "^4.4.19",
     "pino": "^5.13.5"
   }
